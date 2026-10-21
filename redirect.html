@@ -90,6 +90,22 @@
         Open Now ➜
       </button>
 
+      <!-- Share While Waiting -->
+      <div class="glass p-3 rounded-2xl mb-4 border border-white/10 flex items-center justify-between gap-2 shadow-lg"
+        style="background:linear-gradient(135deg,rgba(249,115,22,0.12),rgba(236,72,153,0.12));">
+        <span class="text-xs text-gray-300 font-medium">Share while you wait:</span>
+        <div class="flex items-center gap-1.5">
+          <button onclick="shareWhatsApp()"
+            class="px-2.5 py-1 rounded-xl text-xs font-semibold bg-green-500/20 hover:bg-green-500/30 text-green-400 transition-all active:scale-95 flex items-center gap-1">
+            WhatsApp 💬
+          </button>
+          <button onclick="shareTelegram()"
+            class="px-2.5 py-1 rounded-xl text-xs font-semibold bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 transition-all active:scale-95 flex items-center gap-1">
+            Telegram ✈️
+          </button>
+        </div>
+      </div>
+
       <!-- Back -->
       <a href="/" class="text-gray-600 text-xs hover:text-gray-400 transition-colors block mb-4">← Go back to channels</a>
 
@@ -164,6 +180,20 @@
   function goNow() {
     clearInterval(timer);
     window.location.href = link;
+  }
+
+  // Social Share Functions
+  const SHARE_TEXT = "Join " + name + " and explore top Telegram channels! 🎬🚀";
+  function getShareUrl() {
+    return window.location.origin && window.location.origin !== "null" ? window.location.origin : window.location.href;
+  }
+  function shareWhatsApp() {
+    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(SHARE_TEXT + "\n" + getShareUrl())}`;
+    window.open(url, "_blank");
+  }
+  function shareTelegram() {
+    const url = `https://t.me/share/url?url=${encodeURIComponent(getShareUrl())}&text=${encodeURIComponent(SHARE_TEXT)}`;
+    window.open(url, "_blank");
   }
 
   // Right-Click & Inspect Protection
