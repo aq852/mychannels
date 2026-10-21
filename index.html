@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="cosmos">
+<html lang="en" data-theme="sunset">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -270,6 +270,17 @@
         <button class="theme-dot"        data-theme="galaxy"  style="background:linear-gradient(135deg,#9333ea,#ec4899)" title="Galaxy"  onclick="setTheme('galaxy',this)"></button>
       </div>
       <p class="text-xs text-gray-700">Pick a theme 👆</p>
+
+      <!-- ── THEME SWITCHER ──────────────────── -->
+      <div class="flex items-center justify-center gap-3 mb-2">
+        <span class="text-xs text-gray-600 mr-1">Theme:</span>
+        <button class="theme-dot active" data-theme="cosmos"  style="background:linear-gradient(135deg,#4f46e5,#2AABEE)" title="Cosmos"  onclick="setTheme('cosmos',this)"></button>
+        <button class="theme-dot"        data-theme="neon"    style="background:linear-gradient(135deg,#00ff88,#00d4ff)" title="Neon"    onclick="setTheme('neon',this)"></button>
+        <button class="theme-dot"        data-theme="sunset"  style="background:linear-gradient(135deg,#f97316,#ec4899)" title="Sunset"  onclick="setTheme('sunset',this)"></button>
+        <button class="theme-dot"        data-theme="ocean"   style="background:linear-gradient(135deg,#0ea5e9,#06b6d4)" title="Ocean"   onclick="setTheme('ocean',this)"></button>
+        <button class="theme-dot"        data-theme="galaxy"  style="background:linear-gradient(135deg,#9333ea,#ec4899)" title="Galaxy"  onclick="setTheme('galaxy',this)"></button>
+      </div>
+      <p class="text-xs text-gray-700">Pick a theme 👆</p>
     </div>
 
     <!-- ── CHANNEL GRID ────────────────────────── -->
@@ -298,21 +309,23 @@
 const channels = [
   {
     name:    "Movie Update",
-    desc:    "",
+    desc:    "Latest movie releases, trailers & film news uploaded daily.",
     emoji:   "🎬",
     image:   "https://i.ibb.co/fVxKMFFr/photo-2026-10-19-02-19-52-7698198031450577920.jpg",
     members: "307",
     link:    "https://t.me/+IJZ4m49jRSI5YzYx",
     isNew:   false,
+    hidden:  false,   // 👈 true = hide from site, false = show
   },
   {
-    name:    "Comatozze Collection",
-    desc:    "",
+    name:    "Tech News Daily",
+    desc:    "Latest updates from the world of AI, gadgets & software.",
     emoji:   "💻",
-    image:   "https://picstate.com/files/22887335_6jlqc/cumatozz.jpg",
-    members: "",
-    link:    "https://t.me/SinGateBot?start=req_LTEwMDM4NjA5MTkzODk",
+    image:   "",
+    members: "1.2K",
+    link:    "https://t.me/+IJZ4m49jRSI5YzYx",
     isNew:   true,
+    hidden:  true,    // 👈 HIDDEN — won't show on site
   },
   {
     name:    "Crypto Signals",
@@ -322,6 +335,7 @@ const channels = [
     members: "4.8K",
     link:    "https://t.me/+IJZ4m49jRSI5YzYx",
     isNew:   false,
+    hidden:  true,    // 👈 HIDDEN
   },
   {
     name:    "Study Hub",
@@ -331,6 +345,7 @@ const channels = [
     members: "12.5K",
     link:    "https://t.me/+IJZ4m49jRSI5YzYx",
     isNew:   false,
+    hidden:  true,    // 👈 HIDDEN
   },
   {
     name:    "Web Series Zone",
@@ -340,6 +355,7 @@ const channels = [
     members: "8.3K",
     link:    "https://t.me/+IJZ4m49jRSI5YzYx",
     isNew:   true,
+    hidden:  true,    // 👈 HIDDEN
   },
   {
     name:    "Startup Hub",
@@ -349,6 +365,7 @@ const channels = [
     members: "2.1K",
     link:    "https://t.me/+IJZ4m49jRSI5YzYx",
     isNew:   false,
+    hidden:  true,    // 👈 HIDDEN
   },
   {
     name:    "News Flash",
@@ -358,6 +375,7 @@ const channels = [
     members: "22.7K",
     link:    "https://t.me/+IJZ4m49jRSI5YzYx",
     isNew:   false,
+    hidden:  true,    // 👈 HIDDEN
   },
 ];
 
@@ -374,22 +392,37 @@ const grads = [
 ];
 
 // ═══════════════════════════════════════════
-//  Build ticker
+//  Filter hidden + build ticker
 // ═══════════════════════════════════════════
+const visible = channels.filter(ch => !ch.hidden);
 const ticker = document.getElementById("ticker");
 // Duplicate for seamless loop
-const items = [...channels, ...channels].map(ch =>
+const items = [...visible, ...visible].map(ch =>
   `<span class="ticker-item"><span class="ticker-dot"></span>${ch.emoji} ${ch.name}</span>`
 ).join("");
 ticker.innerHTML = items;
 
 // ═══════════════════════════════════════════
-//  Build cards
+//  Count-up animation
+// ═══════════════════════════════════════════
+function countUp(el, target, duration = 900) {
+  let start = 0;
+  const step = target / (duration / 16);
+  const t = setInterval(() => {
+    start += step;
+    if (start >= target) { el.textContent = target; clearInterval(t); return; }
+    el.textContent = Math.floor(start);
+  }, 16);
+}
+
+// ═══════════════════════════════════════════
+//  Build cards (only visible channels)
 // ═══════════════════════════════════════════
 const grid = document.getElementById("grid");
-document.getElementById("total-count").textContent = channels.length;
+const countEl = document.getElementById("total-count");
+setTimeout(() => countUp(countEl, visible.length, 900), 400);
 
-channels.forEach((ch, i) => {
+visible.forEach((ch, i) => {
   const [g1, g2] = grads[i % grads.length];
   const card = document.createElement("div");
   card.className = "channel-card card-anim glass rounded-2xl overflow-hidden flex flex-col";
@@ -424,7 +457,7 @@ channels.forEach((ch, i) => {
 
       <!-- Actions -->
       <div class="flex mt-auto pt-3 border-t" style="border-color:rgba(255,255,255,0.07)">
-        <button id="btn-${i}" onclick="joinCh(${i}, '${ch.link}', \`${ch.name}\`, '${ch.emoji}')"
+        <button id="btn-${i}" onclick="joinCh(${i}, '${ch.link}', \`${ch.name}\`, '${ch.emoji}', '${ch.image||''}')"
           class="join-btn text-white text-sm font-bold px-5 py-2 rounded-xl w-full">
           Join ➜
         </button>
@@ -437,34 +470,15 @@ channels.forEach((ch, i) => {
 // ═══════════════════════════════════════════
 //  Join — goes through countdown redirect page
 // ═══════════════════════════════════════════
-function joinCh(i, link, name, emoji) {
+function joinCh(i, link, name, emoji, image) {
   const btn = document.getElementById("btn-" + i);
   btn.disabled = true;
   btn.textContent = "Opening…";
-  const url = `/redirect.html?url=${encodeURIComponent(link)}&name=${encodeURIComponent(name)}&emoji=${encodeURIComponent(emoji)}`;
+  const url = `/redirect.html?url=${encodeURIComponent(link)}&name=${encodeURIComponent(name)}&emoji=${encodeURIComponent(emoji)}&img=${encodeURIComponent(image||'')}`;
   window.location.href = url;
 }
 
-// ═══════════════════════════════════════════
-//  Theme switcher
-// ═══════════════════════════════════════════
-function setTheme(theme, el) {
-  document.documentElement.setAttribute("data-theme", theme);
-  document.querySelectorAll(".theme-dot").forEach(d => d.classList.remove("active"));
-  el.classList.add("active");
-  localStorage.setItem("tg-theme", theme);
-}
-
-// Restore saved theme
-const saved = localStorage.getItem("tg-theme");
-if (saved) {
-  document.documentElement.setAttribute("data-theme", saved);
-  const dot = document.querySelector(`[data-theme="${saved}"].theme-dot`);
-  if (dot) {
-    document.querySelectorAll(".theme-dot").forEach(d => d.classList.remove("active"));
-    dot.classList.add("active");
-  }
-}
+// Sunset is permanent — no theme switcher needed
 </script>
 </body>
 </html>
