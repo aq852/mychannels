@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/33768956/README.md)
 # ✈️ Telegram Channels Directory — AkMovieVerse
 
 A high-performance, responsive web directory for Telegram channels featuring a **Sunset Glassmorphism UI**, a **7-second circular countdown redirect page**, a **Load More** pagination system, and an **Admin reporting bot integration**.
