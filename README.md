@@ -1,3 +1,4 @@
+[README.md](https://github.com/user-attachments/files/33768956/README.md)
 # ✈️ Telegram Channels Directory — AkMovieVerse
 
 A high-performance, responsive web directory for Telegram channels featuring a **Sunset Glassmorphism UI**, a **7-second circular countdown redirect page**, a **Load More** pagination system, and an **Admin reporting bot integration**.
@@ -21,6 +22,7 @@ Built with **Zero Build Step** (Pure HTML + Tailwind CSS CDN + Vanilla JavaScrip
 - 🤖 **Admin Broken Link Reporting (`@AK_ownerbot`):**
   - Floating action pill in bottom-right corner across all pages.
   - Integrated footer links to report broken links or banned channels.
+- 📤 **Instant Social Share Buttons:** Quick 1-click sharing to WhatsApp and Telegram, plus native mobile Web Share sheet and copy link toast notification across the home page and redirect countdown screen.
 - 🔒 **Right-Click & Inspect Protection:** Prevents right-click context menu and common inspection shortcuts (`F12`, `Ctrl+U`, `Ctrl+Shift+I`).
 - 🌐 **Rich Social Previews (Open Graph):** Custom metadata for cards on WhatsApp, Telegram, and Twitter.
 - 🎨 **Custom SVG Favicon:** Sunset orange Telegram paper-plane icon.
