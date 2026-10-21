@@ -198,6 +198,23 @@
 
   <div class="relative z-10">
 
+    <!-- ── MAIN CHANNEL STICKY BAR ───────────────── -->
+    <div class="sticky top-0 z-50 w-full" style="background:linear-gradient(90deg,rgba(28,147,212,0.18),rgba(108,63,247,0.18));backdrop-filter:blur(16px);border-bottom:1px solid rgba(42,171,238,0.2)">
+      <div class="max-w-5xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0"></div>
+          <span class="text-xs text-gray-300 font-medium hidden sm:block">Our Main Channel:</span>
+          <span class="text-sm font-bold text-white">⭐ AkMovieVerse</span>
+          <span class="text-xs text-gray-500 hidden md:block">— Premium movie content, daily updates</span>
+        </div>
+        <a href="https://t.me/AkMovieVerse" target="_blank"
+          class="flex-shrink-0 text-xs font-bold px-4 py-1.5 rounded-xl text-white transition-all hover:scale-105"
+          style="background:linear-gradient(135deg,#2AABEE,#6c3ff7)">
+          Join Free ➜
+        </a>
+      </div>
+    </div>
+
     <!-- ── MARQUEE TICKER ──────────────────────── -->
     <div class="ticker-wrap" id="ticker-bar">
       <div class="ticker" id="ticker">
@@ -281,7 +298,7 @@
 const channels = [
   {
     name:    "Movie Update",
-    desc:    "Latest movie releases, trailers & film news uploaded daily.",
+    desc:    "",
     emoji:   "🎬",
     image:   "https://i.ibb.co/fVxKMFFr/photo-2026-10-19-02-19-52-7698198031450577920.jpg",
     members: "307",
@@ -290,7 +307,7 @@ const channels = [
   },
   {
     name:    "Comatozze Collection",
-    desc:    "Comatozze Premium Collection with forward on",
+    desc:    "",
     emoji:   "💻",
     image:   "https://picstate.com/files/22887335_6jlqc/cumatozz.jpg",
     members: "",
@@ -407,7 +424,7 @@ channels.forEach((ch, i) => {
 
       <!-- Actions -->
       <div class="flex mt-auto pt-3 border-t" style="border-color:rgba(255,255,255,0.07)">
-        <button id="btn-${i}" onclick="joinCh(${i},'${ch.link}')"
+        <button id="btn-${i}" onclick="joinCh(${i}, '${ch.link}', \`${ch.name}\`, '${ch.emoji}')"
           class="join-btn text-white text-sm font-bold px-5 py-2 rounded-xl w-full">
           Join ➜
         </button>
@@ -418,23 +435,14 @@ channels.forEach((ch, i) => {
 });
 
 // ═══════════════════════════════════════════
-//  Join
+//  Join — goes through countdown redirect page
 // ═══════════════════════════════════════════
-function joinCh(i, link) {
+function joinCh(i, link, name, emoji) {
   const btn = document.getElementById("btn-" + i);
   btn.disabled = true;
   btn.textContent = "Opening…";
-  btn.style.background = "rgba(255,255,255,0.1)";
-  window.open(link, "_blank");
-  setTimeout(() => {
-    btn.textContent = "✅ Joined!";
-    btn.style.background = "linear-gradient(135deg,#16a34a,#15803d)";
-    setTimeout(() => {
-      btn.textContent = "Join ➜";
-      btn.disabled = false;
-      btn.style.background = "";
-    }, 3000);
-  }, 700);
+  const url = `/redirect.html?url=${encodeURIComponent(link)}&name=${encodeURIComponent(name)}&emoji=${encodeURIComponent(emoji)}`;
+  window.location.href = url;
 }
 
 // ═══════════════════════════════════════════
