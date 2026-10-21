@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Redirecting...</title>
+  <title>Redirecting to Channel...</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f97316'%3E%3Cpath d='M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z'/%3E%3C/svg%3E"/>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
   <style>
@@ -87,13 +91,34 @@
       </button>
 
       <!-- Back -->
-      <a href="/" class="text-gray-600 text-xs hover:text-gray-400 transition-colors block">← Go back to channels</a>
+      <a href="/" class="text-gray-600 text-xs hover:text-gray-400 transition-colors block mb-4">← Go back to channels</a>
+
+      <!-- Report link -->
+      <a href="https://t.me/AK_ownerbot" target="_blank"
+        class="inline-flex items-center gap-1.5 text-xs text-orange-400/80 hover:text-orange-300 transition-colors">
+        <svg class="w-3.5 h-3.5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        Link broken or channel banned? Report to @AK_ownerbot
+      </a>
     </div>
   </div>
 
   <div class="text-center pb-6 text-gray-700 text-xs relative z-10">
     Redirecting safely · My Telegram Channels
   </div>
+
+  <!-- Floating Report Button -->
+  <a href="https://t.me/AK_ownerbot" target="_blank"
+    class="fixed bottom-5 right-5 z-40 glass px-3.5 py-2 rounded-full text-xs font-semibold flex items-center gap-2 text-gray-300 hover:text-white transition-all hover:scale-105 shadow-2xl border border-white/10"
+    style="background:rgba(15,8,0,0.85);backdrop-filter:blur(12px);"
+    title="Report Banned Channel or Broken Link">
+    <span class="flex h-2 w-2 relative">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+    </span>
+    <span>Report Link</span>
+  </a>
 
 <script>
   const params = new URLSearchParams(window.location.search);
@@ -140,6 +165,18 @@
     clearInterval(timer);
     window.location.href = link;
   }
+
+  // Right-Click & Inspect Protection
+  document.addEventListener("contextmenu", e => e.preventDefault());
+  document.addEventListener("keydown", e => {
+    if (
+      e.key === "F12" ||
+      (e.ctrlKey && (e.key === "u" || e.key === "U" || e.key === "s" || e.key === "S")) ||
+      (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "i" || e.key === "J" || e.key === "j" || e.key === "C" || e.key === "c"))
+    ) {
+      e.preventDefault();
+    }
+  });
 </script>
 </body>
 </html>
