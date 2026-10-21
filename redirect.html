@@ -93,9 +93,19 @@
   const link   = params.get("url")   || "";
   const name   = params.get("name")  || "Channel";
   const emoji  = params.get("emoji") || "🔗";
+  const img    = params.get("img")   || "";
+
+  // Show poster image if available, else emoji
+  const iconEl = document.getElementById("ch-emoji");
+  if (img) {
+    iconEl.innerHTML = `<img src="${img}" alt="${name}"
+      style="width:100%;height:100%;object-fit:cover;border-radius:14px;"
+      onerror="this.parentElement.textContent='${emoji}'"/>`;
+  } else {
+    iconEl.textContent = emoji;
+  }
 
   document.getElementById("ch-name").textContent  = name;
-  document.getElementById("ch-emoji").textContent = emoji;
   document.title = "Joining " + name + "...";
 
   if (!link) { window.location.href = "/"; }
