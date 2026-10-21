@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Redirecting...</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0d0d1a; min-height: 100vh; }
+    .blob { position:fixed;border-radius:50%;filter:blur(90px);opacity:.15;animation:float 8s ease-in-out infinite;pointer-events:none; }
+    .blob-1 { width:400px;height:400px;background:#4f46e5;top:-80px;left:-80px; }
+    .blob-2 { width:350px;height:350px;background:#2AABEE;bottom:-80px;right:-80px;animation-delay:4s; }
+    @keyframes float { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,-20px)} }
+
+    .ring-bg   { stroke:rgba(255,255,255,0.08); }
+    .ring-fill {
+      stroke:#2AABEE; stroke-linecap:round;
+      transform:rotate(-90deg); transform-origin:50% 50%;
+      transition:stroke-dashoffset .9s linear;
+      filter:drop-shadow(0 0 8px rgba(42,171,238,0.6));
+    }
+
+    @keyframes numPop { 0%{transform:scale(1.4);opacity:.5} 100%{transform:scale(1);opacity:1} }
+    .num-pop { animation:numPop .4s ease-out; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .fade-up { animation:fadeUp .6s ease both; }
+
+    .glass { background:rgba(255,255,255,0.05);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08); }
+
+    .skip-btn { background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);transition:all .2s; }
+    .skip-btn:hover { background:rgba(255,255,255,0.12);transform:scale(1.03); }
+
+    #progress-bar { transition:width 1s linear; }
+  </style>
+</head>
+<body class="text-white flex flex-col min-h-screen relative overflow-hidden">
+
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- Top progress bar -->
+  <div class="fixed top-0 left-0 right-0 h-1 bg-white/5 z-50">
+    <div id="progress-bar" class="h-full w-full rounded-full" style="background:linear-gradient(90deg,#2AABEE,#6c3ff7)"></div>
+  </div>
+
+  <div class="flex-1 flex items-center justify-center px-4 relative z-10">
+    <div class="text-center fade-up max-w-sm w-full">
+
+      <!-- Emoji icon -->
+      <div id="ch-emoji" class="w-24 h-24 rounded-2xl mx-auto mb-6 flex items-center justify-center text-5xl glass shadow-2xl">🔗</div>
+
+      <!-- Name -->
+      <h2 class="text-2xl font-bold mb-1" id="ch-name">Opening Channel</h2>
+      <p class="text-gray-500 text-sm mb-8">You will be redirected to Telegram</p>
+
+      <!-- Circular timer -->
+      <div class="relative w-36 h-36 mx-auto mb-8">
+        <svg class="w-full h-full" viewBox="0 0 100 100">
+          <circle class="ring-bg"   cx="50" cy="50" r="44" fill="none" stroke-width="6"/>
+          <circle class="ring-fill" cx="50" cy="50" r="44" fill="none" stroke-width="6"
+            id="ring" stroke-dasharray="276.46" stroke-dashoffset="0"/>
+        </svg>
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <span id="num" class="text-5xl font-black">5</span>
+          <span class="text-xs text-gray-500 mt-1">seconds</span>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <p class="text-gray-400 text-sm mb-6">
+        Opening Telegram in <span id="sec" class="text-white font-semibold">5</span> seconds...
+      </p>
+
+      <!-- Open Now -->
+      <button onclick="goNow()" class="skip-btn text-white font-semibold px-8 py-3 rounded-2xl text-sm w-full mb-3">
+        Open Now ➜
+      </button>
+
+      <!-- Back -->
+      <a href="/" class="text-gray-600 text-xs hover:text-gray-400 transition-colors block">← Go back to channels</a>
+    </div>
+  </div>
+
+  <div class="text-center pb-6 text-gray-700 text-xs relative z-10">
+    Redirecting safely · My Telegram Channels
+  </div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const link   = params.get("url")   || "";
+  const name   = params.get("name")  || "Channel";
+  const emoji  = params.get("emoji") || "🔗";
+
+  document.getElementById("ch-name").textContent  = name;
+  document.getElementById("ch-emoji").textContent = emoji;
+  document.title = "Joining " + name + "...";
+
+  if (!link) { window.location.href = "/"; }
+
+  const TOTAL = 5, CIRC = 276.46;
+  let count = TOTAL;
+  const ring = document.getElementById("ring");
+  const numEl = document.getElementById("num");
+  const secEl = document.getElementById("sec");
+  const bar   = document.getElementById("progress-bar");
+
+  const timer = setInterval(() => {
+    count--;
+    numEl.classList.remove("num-pop");
+    void numEl.offsetWidth;
+    numEl.classList.add("num-pop");
+    numEl.textContent = count;
+    secEl.textContent = count;
+    ring.style.strokeDashoffset = CIRC * (1 - count / TOTAL);
+    bar.style.width = (count / TOTAL * 100) + "%";
+    if (count <= 0) { clearInterval(timer); numEl.textContent = "🚀"; setTimeout(goNow, 300); }
+  }, 1000);
+
+  function goNow() {
+    clearInterval(timer);
+    window.location.href = link;
+  }
+</script>
+</body>
+</html>
